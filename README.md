@@ -1,4 +1,4 @@
-# Local Pinger
+# Local Pinger [![Build Status](https://travis-ci.org/toggl/pinger.svg?branch=master)](https://travis-ci.org/toggl/pinger)
 
 A small utility to periodically check different services and post the status JSON to a 3rd party.
 

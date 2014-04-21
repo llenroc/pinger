@@ -1,0 +1,5 @@
+bin/*
+.idea/workspace.xml
+.idea/tasks.xml
+pkg
+src/github.com

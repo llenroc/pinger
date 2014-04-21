@@ -1,7 +1,7 @@
 # Local Pinger [![Build Status](https://travis-ci.org/toggl/pinger.svg?branch=master)](https://travis-ci.org/toggl/pinger)
 
-A small utility to periodically check different services and post the status JSON to a 3rd party.
-
+A small utility to periodically check different services and post the status JSON to your own analytics or a 3rd party
+server. You can read about reasoning for creating this at [toggl blog](http://blog.toggl.com/2014/04/5-tips-servers-service-monitoring/)
 ## Usage
 
 Local Pinger compiles into an executable binary. You'll need to set the ping period and an URL for jobs listing/results saving.<br/>

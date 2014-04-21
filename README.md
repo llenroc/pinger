@@ -15,7 +15,11 @@ local_pinger -period=10 -jobs_url="http://localhost/http_checks"
 You ought to provide a list of services from a service as HTTP GET, that needs 'pinging'.<br/>
 Format is simple JSON:
 ```json
-["http://service1/status", "http://service2/status/db", "http://172.16.0.1/cache.manifest"]
+[
+  "http://service1/status",
+  "http://service2/status/db",
+  "http://172.16.0.1/cache.manifest"
+]
 ```
 
 In current version the results saving is a POST to the same URL.

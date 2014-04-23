@@ -2,10 +2,11 @@ package dummy
 
 import (
 	"io"
-	"net/http"
 	"log"
+	"net/http"
 )
 
+// SampleData - Handler for sample data return/data post
 func SampleData(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
 		io.WriteString(w, "[\"http://127.0.0.1:3000/status\"]\n")
@@ -14,6 +15,7 @@ func SampleData(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// StatusResponse - 'OK' handler
 func StatusResponse(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "OK\n")
 }

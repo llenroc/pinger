@@ -16,40 +16,40 @@ type Response struct {
 	ResponseTimeStr         string
 	Status                  int
 	StatusStr               string
-	Url                     string
+	URL                     string
 	Start                   time.Time
 }
 
 func newResponseFor(url string) *Response {
-	return &Response{Url: url, Start: time.Now()}
+	return &Response{URL: url, Start: time.Now()}
 }
 
-func (this *Response) AddError(err error) {
-	this.Error = err
-	this.ErrorStr = fmt.Sprintf("%v", err)
+func (response *Response) AddError(err error) {
+	response.Error = err
+	response.ErrorStr = fmt.Sprintf("%v", err)
 }
 
-func (this *Response) AddErrorMessage(msg string) {
-	this.Error = errors.New(msg)
-	this.ErrorStr = msg
+func (response *Response) AddErrorMessage(msg string) {
+	response.Error = errors.New(msg)
+	response.ErrorStr = msg
 }
 
-func (this *Response) RequireHttpOk() {
-	if this.Error == nil && this.Status != 200 {
-		this.AddErrorMessage(fmt.Sprintf("Got %s (%s)", this.StatusStr, this.Body))
+func (response *Response) RequireHTTPOK() {
+	if response.Error == nil && response.Status != 200 {
+		response.AddErrorMessage(fmt.Sprintf("Got %s (%s)", response.StatusStr, response.Body))
 	}
 }
 
-func (this *Response) populateFrom(r *http.Response) {
-	this.ResponseTimeNanoSeconds = time.Since(this.Start)
-	this.ResponseTimeStr = fmt.Sprintf("%v", this.ResponseTimeNanoSeconds)
-	this.Status = r.StatusCode
-	this.StatusStr = r.Status
+func (response *Response) populateFrom(r *http.Response) {
+	response.ResponseTimeNanoSeconds = time.Since(response.Start)
+	response.ResponseTimeStr = fmt.Sprintf("%v", response.ResponseTimeNanoSeconds)
+	response.Status = r.StatusCode
+	response.StatusStr = r.Status
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		this.AddError(err)
+		response.AddError(err)
 	} else {
-		this.Body = string(body)
+		response.Body = string(body)
 	}
 }

@@ -36,7 +36,7 @@ func (manager *Manager) performJobsLoop() {
 
 func (manager *Manager) loadJobs() error {
 	data := pinger_http.Get(manager.JobServer)
-	data.RequireHttpOk()
+	data.RequireHTTPOK()
 
 	if data.Error != nil {
 		return data.Error
@@ -49,16 +49,16 @@ func (manager *Manager) loadJobs() error {
 func (manager *Manager) performJobs() {
 	// FIXME: this func is way to long
 	results := []*pinger_http.Response{}
-	async_results := make(chan *pinger_http.Response, len(manager.jobs))
+	asyncResults := make(chan *pinger_http.Response, len(manager.jobs))
 
 	for _, job := range manager.jobs {
 		go func(url string) {
-			async_results <- pinger_http.Get(url)
+			asyncResults <- pinger_http.Get(url)
 		}(job)
 	}
 
 	for i := 0; i < len(manager.jobs); i++ {
-		results = append(results, <-async_results)
+		results = append(results, <-asyncResults)
 	}
 
 	b, err := json.Marshal(results)
@@ -66,7 +66,7 @@ func (manager *Manager) performJobs() {
 		log.Panicf("Error generating json: %s", err)
 	}
 
-	result := pinger_http.PostJson(manager.JobServer, string(b))
+	result := pinger_http.PostJSON(manager.JobServer, string(b))
 	if result.Error != nil {
 		log.Printf("Error posting json to job server: %v", result.Error)
 	}

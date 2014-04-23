@@ -6,7 +6,7 @@ import (
 
 const jsonType = "application/json"
 
-func PostJson(url, json string) (resp *Response) {
+func PostJSON(url, json string) (resp *Response) {
 	resp = newResponseFor(url)
 
 	b := strings.NewReader(json)
@@ -21,7 +21,7 @@ func PostJson(url, json string) (resp *Response) {
 	defer r.Body.Close()
 
 	resp.populateFrom(r)
-	resp.RequireHttpOk()
+	resp.RequireHTTPOK()
 
 	return
 }

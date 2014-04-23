@@ -14,13 +14,14 @@ new:
 quality: fmt vet lint
 
 fmt:
-	go fmt local_pinger pinger_http pinger_jobs
+	go fmt local_pinger pinger_http pinger_jobs dummy
 
 vet:
-	go vet local_pinger pinger_http pinger_jobs
+	go vet local_pinger pinger_http pinger_jobs dummy
 
 lint: bin/golint
 	bin/golint src/*pinger*
+	bin/golint src/dummy
 
 bin/golint:
 	go get github.com/golang/lint/golint

@@ -12,8 +12,7 @@ func main() {
 	log.Printf("Preparing to run")
 
 	serverURL := flag.String("jobs_url", "http://127.0.0.1:3000/http_checks", "URL for jobs server")
-	// FIXME: Period should default to 30 seconds
-	periodSeconds := flag.Int("period", 1, "Delay between checks")
+	periodSeconds := flag.Int("period", 30, "Delay between checks")
 	flag.Parse()
 
 	host, err := os.Hostname()

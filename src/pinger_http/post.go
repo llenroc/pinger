@@ -1,8 +1,6 @@
 package pinger_http
 
-import (
-	"strings"
-)
+import "strings"
 
 const jsonType = "application/json"
 

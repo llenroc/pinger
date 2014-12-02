@@ -14,7 +14,7 @@ type Manager struct {
 	Period    int
 }
 
-func (manager *Manager) Run() {
+func (manager *Manager) Run() error {
 	err := manager.loadJobs()
 	if err != nil {
 		if strings.Contains(err.Error(), "connection refused") {
@@ -22,14 +22,17 @@ func (manager *Manager) Run() {
 		}
 		log.Panicf("Error Loading jobs: %s", err)
 	}
-	manager.performJobsLoop()
+	return manager.performJobsLoop()
 }
 
-func (manager *Manager) performJobsLoop() {
+func (manager *Manager) performJobsLoop() error {
 	log.Printf("Started loop with %d jobs (run every %d seconds)", len(manager.jobs), manager.Period)
 	sleepTime := time.Duration(manager.Period) * time.Second
 	for {
-		manager.performJobs()
+		err := manager.performJobs()
+		if err != nil {
+			return err
+		}
 		time.Sleep(sleepTime)
 	}
 }
@@ -46,8 +49,29 @@ func (manager *Manager) loadJobs() error {
 	return dec.Decode(&manager.jobs)
 }
 
-func (manager *Manager) performJobs() {
-	// FIXME: this func is way to long
+func (manager *Manager) performJobs() error {
+	results := manager.getAsyncResults()
+	b, err := json.Marshal(results)
+	if err != nil {
+		log.Panicf("Error generating json: %s", err)
+	}
+
+	result := pinger_http.PostJSON(manager.JobServer, string(b))
+
+	if result.Error != nil {
+		log.Printf("Error posting json to job server: %v\n", result.Error)
+	}
+
+	log.Printf("Status = %d", result.Status)
+
+	if result.Status == 410 {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (manager *Manager) getAsyncResults() []*pinger_http.Response {
 	results := []*pinger_http.Response{}
 	asyncResults := make(chan *pinger_http.Response, len(manager.jobs))
 
@@ -60,14 +84,5 @@ func (manager *Manager) performJobs() {
 	for i := 0; i < len(manager.jobs); i++ {
 		results = append(results, <-asyncResults)
 	}
-
-	b, err := json.Marshal(results)
-	if err != nil {
-		log.Panicf("Error generating json: %s", err)
-	}
-
-	result := pinger_http.PostJSON(manager.JobServer, string(b))
-	if result.Error != nil {
-		log.Printf("Error posting json to job server: %v", result.Error)
-	}
+	return results
 }

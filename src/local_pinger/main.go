@@ -22,5 +22,8 @@ func main() {
 
 	manager := pinger_jobs.Manager{Period: *periodSeconds,
 		JobServer: fmt.Sprintf("%s?host=%s", *serverURL, host)}
-	manager.Run()
+	err = manager.Run()
+	if err != nil {
+		os.Exit(1)
+	}
 }

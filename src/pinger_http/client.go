@@ -8,4 +8,4 @@ import (
 
 const connectTimeout = time.Duration(2 * time.Second)
 
-var Client = timeoutclient.NewTimeoutClient(connectTimeout, time.Duration(*flags.PeriodSeconds))
+var Client = timeoutclient.NewTimeoutClient(connectTimeout, time.Duration(*flags.PeriodSeconds)*time.Second)

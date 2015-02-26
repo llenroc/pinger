@@ -1,10 +1,10 @@
 package main
 
 import (
+	"flags"
 	"fmt"
 	"log"
 	"os"
-	"pingerFlags"
 	"pinger_jobs"
 )
 
@@ -16,8 +16,8 @@ func main() {
 		log.Panicf("Unable to get hostname: %s", err)
 	}
 
-	manager := pinger_jobs.Manager{Period: *pingerFlags.PeriodSeconds,
-		JobServer: fmt.Sprintf("%s?host=%s", *pingerFlags.ServerURL, host)}
+	manager := pinger_jobs.Manager{Period: *flags.PeriodSeconds,
+		JobServer: fmt.Sprintf("%s?host=%s", *flags.ServerURL, host)}
 	err = manager.Run()
 	if err != nil {
 		os.Exit(1)

@@ -1,4 +1,4 @@
-package pingerFlags
+package flags
 
 import (
 	"flag"

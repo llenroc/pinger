@@ -1,0 +1,11 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/refiito/timeoutclient",
+			"repository": "https://github.com/refiito/timeoutclient",
+			"revision": "b9fde4f919b811d15d6ef7bcc776b197fb9f38c8",
+			"branch": "master"
+		}
+	]
+}
